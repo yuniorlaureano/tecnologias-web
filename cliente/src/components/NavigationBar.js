@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -23,17 +24,17 @@ export const NavigationBar = () => (
         <Nav className="ml-auto">
           <Nav.Item>
             <Nav.Link href="/">
-            Inicio
+            <Link to="/">Inicio</Link>
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="/about">
-              Consultas
+            <Nav.Link>
+              <Link to="/">Consultas</Link>
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="/contact">
-              Transferencias
+            <Nav.Link>
+            <Link to="/">Transferencias</Link>
             </Nav.Link>
           </Nav.Item>
         </Nav>
