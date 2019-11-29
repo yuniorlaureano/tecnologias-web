@@ -32,7 +32,7 @@ export const NavigationBar = () => (
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="/contact">
+            <Nav.Link href="/">
               Transferencias
             </Nav.Link>
           </Nav.Item>
