@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Prueba from './assets/Prueba.jpg';
-import Transferencias from './assets/Transferencias.jpg';
-import Servicios from './assets/Servicios.jpg';
+import Prueba from '../assets/Prueba.jpg';
+import Transferencias from '../assets/Transferencias.jpg';
+import Servicios from '../assets/Servicios.jpg';
 import { Card, Button, Container, CardDeck } from 'react-bootstrap';
 
 class Home extends Component {
