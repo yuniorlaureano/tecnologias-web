@@ -41,6 +41,11 @@ class Query extends Component {
     
     render(){
         
+      const selectRow = {
+        mode: 'checkbox',  // single select
+        clickToSelect: true
+      };
+
         const options = {
             onPageChange: this.handlePageChange,
             onSizePerPageList: this.handleSizePerPageChange,
@@ -61,6 +66,7 @@ class Query extends Component {
                 striped
                 hover
                 condensed
+                selectRow={ selectRow }
                 >
                     <TableHeaderColumn isKey dataField='id'>Product ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='title'>Product Name</TableHeaderColumn>

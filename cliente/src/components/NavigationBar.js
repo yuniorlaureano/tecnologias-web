@@ -29,7 +29,7 @@ export const NavigationBar = () => (
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link as={Link} to="/">
+            <Nav.Link as={Link} to="/query">
               Consultas
             </Nav.Link>
           </Nav.Item>
