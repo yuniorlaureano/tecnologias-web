@@ -14,7 +14,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Login:false
+      Login:true
     };
   }
   render() {
@@ -25,8 +25,8 @@ class App extends Component {
           <Jumbotron />
           <Layout>
             <Switch>
-              <ProtectedRoute exact path="/" loggedIn={this.state.Login} component={Home} />
-              <ProtectedRoute  path="/query" loggedIn={this.state.Login} component={Query} />
+              <ProtectedRoute exact path="/"  component={Home} />
+              <ProtectedRoute  path="/query"  component={Query} />
               <Route path="/Login" component={Login} />
               <Route path="/Signup" component={Signup} />
               <Route component={NoMatch} />

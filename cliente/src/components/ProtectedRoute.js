@@ -1,6 +1,7 @@
 import { Route, Redirect } from 'react-router-dom';
-import React  from 'react';
-const ProtectedRoute = ({ component: Comp, loggedIn, path, ...rest }) => {
+import React, {useState} from 'react';
+const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
+    const [loggedIn] = useState(false);
     return (
       <Route
         path={path}
