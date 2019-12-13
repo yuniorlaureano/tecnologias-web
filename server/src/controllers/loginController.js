@@ -33,7 +33,7 @@ loginCtrl.loginUsers = async (req, res) => {
                 clienteDB.password = ':)';
 
                 const token = jwt.sign({ clienteDB }, SEED, { expiresIn: 259200 }); // 12 HORAS
-                return res.status(200).json({ user: clienteDB, TOKEN: token, Active:true });
+                return res.status(200).json({ user: clienteDB, TOKEN: token});
             });
 
         } else {
@@ -46,7 +46,7 @@ loginCtrl.loginUsers = async (req, res) => {
             adminDB.password = ':)';
 
             const token = jwt.sign({ adminDB }, SEED, { expiresIn: 259200 }); // 12 HORAS
-            return res.status(200).json({ user: adminDB, TOKEN: token, Active:true });
+            return res.status(200).json({ user: adminDB, TOKEN: token});
         }
 
     });
