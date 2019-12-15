@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const router = Router();
-const cors = require('cors');
 const adminCtrl = require('./controllers/adminController');
 const clienteCtrl = require('./controllers/clienteController');
 const loginCtrl = require('./controllers/loginController');
@@ -12,6 +11,7 @@ router.post('/login', loginCtrl.loginUsers);
 router.post('/admins/add', adminCtrl.createAdmin);
 
 //CLIENT ROUTES
+router.get('/clientes', clienteCtrl.getCliente);
 router.post('/clientes/add', clienteCtrl.createCliente);
 router.put('/clientes/:id', clienteCtrl.editCliente);
 router.post('/beneficiarios/add', clienteCtrl.createBeneficiario);
