@@ -7,7 +7,6 @@ import { NavigationBar } from './components/NavigationBar';
 import { Jumbotron } from './components/Jumbotron';
 import Query from "./Pages/Query";
 import Beneficiarios from "./Pages/Beneficiarios";
-import Clientes from "./Pages/Clientes";
 
 class App extends Component {
   render() {
@@ -21,7 +20,6 @@ class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/query" component={Query} />
               <Route exact path="/beneficiarios" component={Beneficiarios} />
-              <Route exact path="/clientes" component={Clientes} />
               <Route component={NoMatch} />
             </Switch>
           </Layout>

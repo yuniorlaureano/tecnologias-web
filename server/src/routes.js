@@ -16,6 +16,7 @@ router.post('/clientes/add', clienteCtrl.createCliente);
 router.put('/clientes/:id', clienteCtrl.editCliente);
 router.post('/beneficiarios/add', clienteCtrl.createBeneficiario);
 router.get('/beneficiarios', clienteCtrl.getBeneficiarios);
+router.get('/beneficiarios/:id', clienteCtrl.getBeneficiario);
 router.post('/servicios/add', clienteCtrl.createServicio);
 router.get('/servicios', clienteCtrl.getServicios);
 router.post('/transacciones/add', clienteCtrl.createTransaction);

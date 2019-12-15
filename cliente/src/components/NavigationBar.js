@@ -30,20 +30,12 @@ export const NavigationBar = () => (
           </Nav.Item>
           <Nav.Item>
             <Nav.Link as={Link} to="/query">
-              Consultas
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link as={Link} to="/">
-              Transferencias
+            Transferencias
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
             <Nav.Link as={Link} to="/beneficiarios">
               Beneficiarios
-            </Nav.Link>
-            <Nav.Link as={Link} to="/clientes">
-              Clientes
             </Nav.Link>
           </Nav.Item>
         </Nav>

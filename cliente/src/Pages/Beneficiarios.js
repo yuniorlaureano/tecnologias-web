@@ -3,9 +3,9 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import axios from "axios";
 import {Button, Modal} from "react-bootstrap";
-import QueryDetails from "../components/QueryDetails";
+import BeneficiarioForm from "../components/BeneficiarioForm";
 
-class Query extends Component {
+class Beneficiarios extends Component {
 
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ class Query extends Component {
           page: 1,
           sizePerPage: 10,
           showModalDetails: false,
-          transaction: null
+          beneficiarios: null,
         };
         this.fetchData = this.fetchData.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
@@ -48,20 +48,45 @@ class Query extends Component {
         this.fetchData(1, sizePerPage);
       }
 
-      showTransactionDetail = id => {
-        this.setState({
-          showModalDetails: true
-        });
-        axios.get(`http://localhost:4000/api/beneficiarios/${id}`).then(res => {
-          this.setState({
-            transaction: res.data
+      showEdit = id => {
+        if(id){
+          axios.get(`http://localhost:4000/api/beneficiarios/${id}`).then(res => {
+            this.setState({
+              beneficiarios: res.data,
+              showModalDetails: true,
+            });
           });
-        });
+        }else{
+          this.setState({
+            beneficiarios: null,
+            showModalDetails: true,
+          });
+        }
       }
 
-      buttonFormatter(cell, row){
-        return <Button variant="info" onClick={()=> this.showTransactionDetail(row._id)}>Info</Button>;
-      } 
+      buttonFormatter = (cell, row) => {
+        return <Button variant="warning" onClick={()=> this.showEdit(row._id)}>Edit</Button>;
+      }
+    
+    onSubmit = data => {
+      const _data = {
+        nombres: data.nombres,
+        apellidos: data.apellidos,
+        noCuenta: data.cuenta,
+        email: data.email,        
+        clienteId: '5debde6dced99e2384a084eb'
+      };
+      axios.post('http://localhost:4000/api/beneficiarios/add', _data)
+              .then(res => {
+                alert('Beneficiario agregado');
+                this.setState({showModalDetails: false});
+                this.fetchData();
+              }).catch(err => {
+                alert('Beneficiario agregado');
+                this.setState({showModalDetails: false});
+              });
+      
+    }
     
     render(){
         const options = {
@@ -70,11 +95,23 @@ class Query extends Component {
             page: this.state.page,
             sizePerPage: this.state.sizePerPage,
           };
-      
+        let beneForm = null;
+        if(this.state.beneficiarios){
+          console.log(this.state.beneficiarios);
+          beneForm = <BeneficiarioForm {...{ show: this.state.showModalDetails,
+            onHide: () => { this.setState({showModalDetails: false}); },
+            onSubmit: this.onSubmit,
+            edit: true}} beneficiario={this.state.beneficiarios}/>;
+        }else{
+          beneForm = <BeneficiarioForm {...{ show: this.state.showModalDetails,
+            onHide: () => { this.setState({showModalDetails: false}); },
+            onSubmit: this.onSubmit,
+            edit: false}} beneficiario={null}/>;
+        }
 
         return (
             <div>
-                <h1>Transacciones</h1>
+                <h1>Beneficiarios <Button variant="primary" onClick={() => this.showEdit(0)}>nuevo</Button></h1>
                 <BootstrapTable
                 data={this.state.items}
                 options={options}
@@ -85,21 +122,18 @@ class Query extends Component {
                 hover
                 condensed
                 >
-                    <TableHeaderColumn isKey dataField='_id'>Product ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='nombres'>Nombre</TableHeaderColumn>
-                    <TableHeaderColumn dataField='apellidos'>Apellido</TableHeaderColumn>
+                    <TableHeaderColumn isKey dataField='_id'>ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='nombres'>Nombres</TableHeaderColumn>
+                    <TableHeaderColumn dataField='apellidos'>Apellidos</TableHeaderColumn>
                     <TableHeaderColumn dataField='noCuenta'>Cuenta</TableHeaderColumn>
                     <TableHeaderColumn dataField='email'>Email</TableHeaderColumn>
                     <TableHeaderColumn dataField="button" dataFormat={this.buttonFormatter}>Buttons</TableHeaderColumn>
                 </BootstrapTable>
-
-                <QueryDetails {...{...this.state.transaction, 
-                                      show: this.state.showModalDetails,
-                                      onHide: () => { this.setState({showModalDetails: false}); }}}/>
+                {beneForm}
             </div>
         );
     }
 }
 
 
-export default Query;
+export default Beneficiarios;

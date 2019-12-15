@@ -197,6 +197,11 @@ clienteCtrl.getBeneficiarios = async (req, res) => {
     });
 }
 
+clienteCtrl.getBeneficiario = async (req, res) => {
+    let data = await Beneficiario.find({"_id": req.params.id});
+    return res.json(data);
+}
+
 clienteCtrl.createServicio = async (req, res) => {
 
     await Servicio.findOne({ nombre: req.body.nombre }, async (err, setServicio) => {
