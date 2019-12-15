@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
+
 const PORT = 4000;
 require('./db');
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({extended: true }));
 app.use(express.json());
 
 //Routes
+app.use(cors({origin: "http://localhost:3000"}));
 app.use('/api', require('./routes'));
 
 app.listen(PORT, () => {

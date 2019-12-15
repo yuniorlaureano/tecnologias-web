@@ -2,6 +2,8 @@ import React ,{ Component} from "react";
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import axios from "axios";
+import {Button, Modal} from "react-bootstrap";
+import QueryDetails from "../components/QueryDetails";
 
 class Query extends Component {
 
@@ -14,10 +16,13 @@ class Query extends Component {
           totalSize: 0,
           page: 1,
           sizePerPage: 10,
+          showModalDetails: false,
+          transaction: null
         };
         this.fetchData = this.fetchData.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handleSizePerPageChange = this.handleSizePerPageChange.bind(this);
+        this.buttonFormatter = this.buttonFormatter.bind(this);
       }
     
       componentDidMount() {
@@ -25,9 +30,13 @@ class Query extends Component {
       }
     
       fetchData(page = this.state.page, sizePerPage = this.state.sizePerPage) {
-        axios.get('https://jsonplaceholder.typicode.com/posts').then(res => {            
-            let data = res.data.slice((page - 1) * sizePerPage, ((page - 1) * sizePerPage) + sizePerPage);
-            this.setState({items: data, totalData: res.data, totalSize: 100, page, sizePerPage});            
+        axios.get(`http://localhost:4000/api/transacciones?page_size=${sizePerPage}&page_num=${page}`).then(res => {  
+            this.setState({
+              items: res.data.data,
+              totalSize: res.data.total, 
+              page,
+              sizePerPage
+            });            
         });
       }
     
@@ -38,14 +47,23 @@ class Query extends Component {
       handleSizePerPageChange(sizePerPage) {
         this.fetchData(1, sizePerPage);
       }
+
+      showTransactionDetail = id => {
+        this.setState({
+          showModalDetails: true
+        });
+        axios.get(`http://localhost:4000/api/transacciones/${id}`).then(res => {
+          this.setState({
+            transaction: res.data
+          });
+        });
+      }
+
+      buttonFormatter(cell, row){
+        return <Button variant="info" onClick={()=> this.showTransactionDetail(row._id)}>Info</Button>;
+      } 
     
     render(){
-        
-      const selectRow = {
-        mode: 'checkbox',  // single select
-        clickToSelect: true
-      };
-
         const options = {
             onPageChange: this.handlePageChange,
             onSizePerPageList: this.handleSizePerPageChange,
@@ -56,7 +74,7 @@ class Query extends Component {
 
         return (
             <div>
-                <h1>Consultas</h1>
+                <h1>Transacciones</h1>
                 <BootstrapTable
                 data={this.state.items}
                 options={options}
@@ -66,12 +84,18 @@ class Query extends Component {
                 striped
                 hover
                 condensed
-                selectRow={ selectRow }
                 >
-                    <TableHeaderColumn isKey dataField='id'>Product ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='title'>Product Name</TableHeaderColumn>
-                    <TableHeaderColumn dataField='body'>Product Price</TableHeaderColumn>
+                    <TableHeaderColumn isKey dataField='_id'>Product ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='concepto'>Concepto</TableHeaderColumn>
+                    <TableHeaderColumn dataField='fecha'>Fecha</TableHeaderColumn>
+                    <TableHeaderColumn dataField='montoATransferir'>Moto</TableHeaderColumn>
+                    <TableHeaderColumn dataField='tipo'>Tipo</TableHeaderColumn>
+                    <TableHeaderColumn dataField="button" dataFormat={this.buttonFormatter}>Buttons</TableHeaderColumn>
                 </BootstrapTable>
+
+                <QueryDetails {...{...this.state.transaction, 
+                                      show: this.state.showModalDetails,
+                                      onHide: () => { this.setState({showModalDetails: false}); }}}/>
             </div>
         );
     }

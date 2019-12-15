@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-
+const cors = require('cors');
 const adminCtrl = require('./controllers/adminController');
 const clienteCtrl = require('./controllers/clienteController');
 const loginCtrl = require('./controllers/loginController');
@@ -19,5 +19,6 @@ router.get('/beneficiarios', clienteCtrl.getBeneficiarios);
 router.post('/servicios/add', clienteCtrl.createServicio);
 router.get('/servicios', clienteCtrl.getServicios);
 router.post('/transacciones/add', clienteCtrl.createTransaction);
-
+router.get('/transacciones', clienteCtrl.getTransactions);
+router.get('/transacciones/:id', clienteCtrl.getTransaction);
 module.exports = router;

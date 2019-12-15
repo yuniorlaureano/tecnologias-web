@@ -280,5 +280,22 @@ clienteCtrl.createTransaction = async (req, res) => {
     }
 }
 
+clienteCtrl.getTransactions = async (req, res) => {
+    const {page_size, page_num} = req.query;
+    let skips = page_size * (page_num - 1);
+    let data = await Transaction.find({}).skip(skips).limit(Number(page_size));
+    let total = await Transaction.count({});
+    return res.json({
+        data: data,
+        page_size,
+        total
+    });
+}
+
+clienteCtrl.getTransaction = async (req, res) => {
+    const {id} = req.params;
+    let data = await Transaction.findOne({"_id": id});
+    return res.json(data);
+}
 
 module.exports = clienteCtrl;
