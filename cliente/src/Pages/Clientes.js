@@ -17,7 +17,7 @@ class Query extends Component {
           page: 1,
           sizePerPage: 10,
           showModalDetails: false,
-          transaction: null
+          clientes: null
         };
         this.fetchData = this.fetchData.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
@@ -48,21 +48,21 @@ class Query extends Component {
         this.fetchData(1, sizePerPage);
       }
 
-      showTransactionDetail = id => {
+      showEdit = id => {
         this.setState({
           showModalDetails: true
         });
         if(id != 0){
           axios.get(`http://localhost:4000/api/beneficiarios/${id}`).then(res => {
             this.setState({
-              transaction: res.data
+              clientes: res.data
             });
           });
         }
       }
 
       buttonFormatter = (cell, row) => {
-        return <Button variant="info" onClick={()=> this.showTransactionDetail(row._id)}>Info</Button>;
+        return <Button variant="info" onClick={()=> this.showEdit(row._id)}>Info</Button>;
       } 
     
     render(){
@@ -76,7 +76,7 @@ class Query extends Component {
 
         return (
             <div>
-                <h1>Clientes <Button variant="primary" onClick={() => this.showTransactionDetail(0)}>nuevo</Button></h1>
+                <h1>Clientes <Button variant="primary" onClick={() => this.showEdit(0)}>nuevo</Button></h1>
                 <BootstrapTable
                 data={this.state.items}
                 options={options}
