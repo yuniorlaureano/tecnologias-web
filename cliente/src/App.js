@@ -9,6 +9,7 @@ import { NavigationBar } from './components/NavigationBar';
 import { Jumbotron } from './components/Jumbotron';
 import ProtectedRoute from './components/ProtectedRoute';
 import Query from "./Pages/Query";
+import Beneficiarios from "./Pages/Beneficiarios";
 
 class App extends Component {
   render() {
@@ -23,6 +24,7 @@ class App extends Component {
               <ProtectedRoute  path="/query"  component={Query} />
               <Route path="/Login" component={Login} />
               <Route path="/Signup" component={Signup} />
+              <Route exact path="/beneficiarios" component={Beneficiarios} />
               <Route component={NoMatch} />
             </Switch>
           </Layout>

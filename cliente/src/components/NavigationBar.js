@@ -29,13 +29,13 @@ export const NavigationBar = () => (
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link as={Link} to="/">
-              Consultas
+            <Nav.Link as={Link} to="/query">
+            Transferencias
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link as={Link} to="/">
-              Transferencias
+            <Nav.Link as={Link} to="/beneficiarios">
+              Beneficiarios
             </Nav.Link>
           </Nav.Item>
         </Nav>

@@ -147,6 +147,18 @@ clienteCtrl.editCliente = async (req, res) => {
     }
 }
 
+clienteCtrl.getCliente = async (req, res) => {
+    const {page_size, page_num} = req.query;
+    let skips = page_size * (page_num - 1);
+    let data = await Cliente.find({}).skip(skips).limit(Number(page_size));
+    let total = await Cliente.count({});
+    return res.json({
+        data: data,
+        page_size,
+        total
+    });
+}
+
 clienteCtrl.createBeneficiario = async (req, res) => {
 
     await Beneficiario.findOne({ noCuenta: req.body.noCuenta }, async (err, setBeneficiario) => {
@@ -177,8 +189,20 @@ clienteCtrl.createBeneficiario = async (req, res) => {
 }
 
 clienteCtrl.getBeneficiarios = async (req, res) => {
-    const beneficiarios = await Beneficiario.find().exec();
-    res.json(beneficiarios);
+    const {page_size, page_num} = req.query;
+    let skips = page_size * (page_num - 1);
+    let data = await Beneficiario.find({}).skip(skips).limit(Number(page_size));
+    let total = await Beneficiario.count({});
+    return res.json({
+        data: data,
+        page_size,
+        total
+    });
+}
+
+clienteCtrl.getBeneficiario = async (req, res) => {
+    let data = await Beneficiario.find({"_id": req.params.id});
+    return res.json(data);
 }
 
 clienteCtrl.createServicio = async (req, res) => {
@@ -283,5 +307,22 @@ clienteCtrl.createTransaction = async (req, res) => {
     }
 }
 
+clienteCtrl.getTransactions = async (req, res) => {
+    const {page_size, page_num} = req.query;
+    let skips = page_size * (page_num - 1);
+    let data = await Transaction.find({}).skip(skips).limit(Number(page_size));
+    let total = await Transaction.count({});
+    return res.json({
+        data: data,
+        page_size,
+        total
+    });
+}
+
+clienteCtrl.getTransaction = async (req, res) => {
+    const {id} = req.params;
+    let data = await Transaction.findOne({"_id": id});
+    return res.json(data);
+}
 
 module.exports = clienteCtrl;
