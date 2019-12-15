@@ -1,7 +1,6 @@
 import { Route, Redirect } from 'react-router-dom';
-import React, {useState} from 'react';
-const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
-    const [loggedIn] = useState(false);
+import React from 'react';
+const ProtectedRoute = ({ component: Comp,loggedIn, path, ...rest }) => {
     return (
       <Route
         path={path}
@@ -14,7 +13,8 @@ const ProtectedRoute = ({ component: Comp, path, ...rest }) => {
               to={{
                 pathname: "/Login",
                 state: { prevLocation: path,
-                  error: "You need to login first!",},
+                  error: "You need to login first!",
+                },
               }}
             />
           );

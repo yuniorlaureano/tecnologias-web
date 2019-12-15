@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom"
-import { Button, FormGroup, FormControl, Form, Card, Row, Col } from "react-bootstrap";
+import { Button, FormGroup, FormControl, Form, Card, Row, Col, Alert } from "react-bootstrap";
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -18,35 +18,57 @@ const Styles = styled.div`
   }
 `;
 
-export default class Login extends Component {
+export default class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
             nombres: "",
-            aplellidos: "",
+            apellidos: "",
             password: "",
             cedula: "",
             numeroDeCuenta: "",
-            saldoActual:0.00,
-            email:"",
-            status:"Activo"
+            saldoActual: 0.00,
+            email: "",
+            status: "Activo",
+            show: true,
+            mensaje: "",
+            Alert: ""
+
         };
-
-    }
-
-    async componentDidMount() {
-        const res = await axios.get(`https://restcountries.eu/rest/v2/capital/tallin`)
-        this.setState({ persons: res.data[0].name })
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        axios.post(`http://localhost:4000/api/clientes/add`, {
+            nombres: this.state.nombres,
+            apellidos: this.state.apellidos,
+            cedula: this.state.cedula,
+            email: this.state.email,
+            password: this.state.password
+        })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                if (res.data.message === 'Client Saved') {
+                    this.setState({ show: false, mensaje: res.data.message, Alert: 'success' })
+                } else {
+                    this.setState({ show: false, mensaje: res.data.message, Alert: 'danger' })
+                }
+
+            })
     }
     render() {
         return (
             <Styles>
                 <div className="Login">
                     <form onSubmit={this.handleSubmit}>
+                        <Alert variant={this.state.Alert} hidden={this.state.show} onClose={() => this.setState({ show: true })} dismissible>
+                            <Alert.Heading>Oh snap! You got an Mensaje!</Alert.Heading>
+                            <p>
+                                {this.state.mensaje}
+                            </p>
+                        </Alert>
                         <Card border="secondary">
                             <Card.Header>
                                 Formulario de registro de cliente.
@@ -70,8 +92,8 @@ export default class Login extends Component {
                                         <FormGroup controlId="Apellidos" size="large">
                                             <Form.Label>Apellidos:</Form.Label>
                                             <FormControl
-                                                value={this.state.aplellidos}
-                                                onChange={e => this.setState({ aplellidos: e.target.value })}
+                                                value={this.state.apellidos}
+                                                onChange={e => this.setState({ apellidos: e.target.value })}
                                                 type="text"
                                                 placeholder="Cabrera Perez"
                                                 required
@@ -88,7 +110,7 @@ export default class Login extends Component {
                                                 value={this.state.cedula}
                                                 onChange={e => this.setState({ cedula: e.target.value })}
                                                 placeholder="000-000000-00"
-                                                maxLength= "11"
+                                                maxLength="11"
                                                 required
                                             />
                                         </FormGroup>
@@ -101,6 +123,7 @@ export default class Login extends Component {
                                                 onChange={e => this.setState({ numeroDeCuenta: e.target.value })}
                                                 type="text"
                                                 placeholder="4-001516-3045"
+                                                disabled
                                                 required
                                             />
                                         </FormGroup>
@@ -115,6 +138,7 @@ export default class Login extends Component {
                                                 value={this.state.saldoActual}
                                                 onChange={e => this.setState({ saldoActual: e.target.value })}
                                                 placeholder="0.00"
+                                                disabled
                                                 required
                                             />
                                         </FormGroup>
@@ -125,7 +149,7 @@ export default class Login extends Component {
                                             <FormControl
                                                 value={this.state.email}
                                                 onChange={e => this.setState({ email: e.target.value })}
-                                                type="Email"
+                                                type="text"
                                                 placeholder="Prueba@test.com"
                                                 required
                                             />
@@ -158,12 +182,12 @@ export default class Login extends Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                <Col>
-                                <Button block type="submit">
-                                    Registrar
+                                    <Col>
+                                        <Button block type="submit">
+                                            Registrar
                             </Button>
-                            </Col>
-                            </Row>
+                                    </Col>
+                                </Row>
                             </Card.Body>
                             <Card.Footer className="text-muted">
                                 <Card.Link as={Link} to="/Login" >Ya tienes una cuenta</Card.Link>

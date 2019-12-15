@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom"
+import { Link} from "react-router-dom"
 import { Button, FormGroup, FormControl, Form, Card } from "react-bootstrap";
 import styled from 'styled-components';
 import axios from 'axios';
@@ -27,17 +27,32 @@ export default class Login extends Component {
         super(props);
         this.state = {
             email: "",
-            persons: [],
             password: "",
             handleSubmit: "",
             setPassword: "",
+            Logged:[],
+            Loggedon:false
         };
 
     }
     async componentDidMount() {
-        const res = await axios.get(`https://restcountries.eu/rest/v2/capital/tallin`)
-        this.setState({ email: res.data[0].name })
+        localStorage.setItem('x-auth-token','false')
     }
+    handleSubmit = event => {
+        event.preventDefault();
+    
+        axios.post(`http://localhost:4000/api/login`, {
+        cedula: this.state.email,
+        password: this.state.password })
+          .then(res => {
+            this.setState({Logged:res.data})
+            console.log(this.state.Logged)
+            if (this.state.Logged.auth === true)
+            {
+                this.props.history.push('/');
+            }
+          })
+      }
     validateForm() {
         return this.state.email.length > 0 && this.state.password.length > 0;
     }
@@ -54,11 +69,11 @@ export default class Login extends Component {
                                 Login
                         </Card.Header>
                             <Card.Body>
-                                <FormGroup controlId="email" size="large">
-                                    <Form.Label>Email</Form.Label>
+                                <FormGroup controlId="usuario" size="large">
+                                    <Form.Label>Usuario</Form.Label>
                                     <FormControl
                                         autoFocus
-                                        type="email"
+                                        type="text"
                                         value={this.state.email}
                                         onChange={e => this.setState({ email: e.target.value })}
                                         placeholder="Nombre de usuario"

@@ -16,7 +16,7 @@ loginCtrl.loginUsers = async (req, res) => {
 
         if (!adminDB) {
 
-            Cliente.findOne({ cedula: req.body.cedula, password: req.body.password }, (err, clienteDB) => {
+            Cliente.findOne({ cedula: req.body.cedula}, (err, clienteDB) => {
                 if (err) {
                     return res.json({ message: 'Error al comprobar la Base de Datos' });
                 }
@@ -33,7 +33,7 @@ loginCtrl.loginUsers = async (req, res) => {
                 clienteDB.password = ':)';
 
                 const token = jwt.sign({ clienteDB }, SEED, { expiresIn: 259200 }); // 12 HORAS
-                return res.status(200).json({ user: clienteDB, TOKEN: token});
+                return res.status(200).json({ user: clienteDB, TOKEN: token, auth:true});
             });
 
         } else {
@@ -46,7 +46,7 @@ loginCtrl.loginUsers = async (req, res) => {
             adminDB.password = ':)';
 
             const token = jwt.sign({ adminDB }, SEED, { expiresIn: 259200 }); // 12 HORAS
-            return res.status(200).json({ user: adminDB, TOKEN: token});
+            return res.status(200).json({ user: adminDB, TOKEN: token, auth:true});
         }
 
     });

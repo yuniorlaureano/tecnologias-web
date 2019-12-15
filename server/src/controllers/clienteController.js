@@ -9,24 +9,22 @@ const Transaction = require('../models/Transaction');
 const clienteCtrl = {};
 
 clienteCtrl.createCliente = async (req, res) => {
-
-    await Cliente.findOne({ cedula: req.body.cedula }, async (err, setCliente) => {
-
+    await Cliente.findOne({ cedula:req.body.cedula }, async (err, setCliente) => {
         if (err) {
             res.status(500).send({
                 message: 'Error al comprobar la Base de Datos'
             })
         } else {
             if (!setCliente) {
-
+                console.log(req.body.nombres);
                 const cliente = new Cliente({
-                    nombres: req.body.nombres.toUpperCase(),
-                    apellidos: req.body.apellidos.toUpperCase(),
+                    nombres: req.body.nombres,
+                    apellidos: req.body.apellido,
                     cedula: req.body.cedula,
-                    noCuenta: Math.floor(Math.random() * 90000000) + 10000000,
+                    noCuenta: Math. floor(Math.random() * 90000000) + 10000000,
                     saldoActual: 0,
                     email: req.body.email,
-                    password: bcrypt.hashSync(req.body.password, 10),
+                    password:bcrypt.hashSync(req.body.password, 10),
                     status: 'ACTIVE',
                     role: 'CLIENTE'
                 });
@@ -69,10 +67,15 @@ clienteCtrl.createCliente = async (req, res) => {
                 res.status(200).send({ message: 'Client Saved' });
 
             } else {
-                res.status(200).send({ message: 'El cliente ya existe' });
+                res.status(200).send({ message: 'El cliente ya existe, favor verificar' });
             }
         }
     });
+}
+
+clienteCtrl.getCliente = async (req, res) => {
+    const Clienteget = await Cliente.find().exec();
+    res.json(Clienteget);
 }
 
 clienteCtrl.editCliente = async (req, res) => {
